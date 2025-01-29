@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <script>
+    let gamepadIndex = null;
+
+    // Detect joystick connection
+    window.addEventListener("gamepadconnected", (e) => {
+      gamepadIndex = e.gamepad.index;
+      requestAnimationFrame(updateJoystick);
+    });
+
+    // Send data to Power Apps
+    function updateJoystick() {
+      if (gamepadIndex !== null) {
+        const gamepad = navigator.getGamepads()[gamepadIndex];
+        if (gamepad) {
+          // Send axes (e.g., left stick X/Y) and buttons to Power Apps
+          const data = {
+            axes: gamepad.axes,
+            buttons: gamepad.buttons.map(btn => btn.value)
+          };
+          window.parent.postMessage(data, "*");
+        }
+      }
+      requestAnimationFrame(updateJoystick);
+    }
+  </script>
+</body>
+</html>
