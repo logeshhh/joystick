@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://yoannmoinet.github.io/nipplejs/javascripts/nipplejs.js"></script>
+  <style>
+    #joystick-zone {
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+  <div id="joystick-zone"></div>
+  <script>
+    let gamepadIndex = null;
+
+    // Virtual Joystick using nipple.js
+    var joystick = nipplejs.create({
+      zone: document.getElementById('joystick-zone'),
+      mode: 'dynamic',
+      color: 'red'
+    });
+
+    joystick.on('move', function (evt, data) {
+      let x = data.vector.x || 0;
+      let y = data.vector.y || 0;
+      let joystickData = {
+        axes: [x, y],
+        buttons: [0, 0, 0, 0] // Simulating buttons
+      };
+      window.parent.postMessage(joystickData, "*");
+    });
+  </script>
+</body>
+</html>
