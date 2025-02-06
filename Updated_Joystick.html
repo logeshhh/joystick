@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Joystick Integration</title>
+</head>
+<body>
+    <script>
+        window.addEventListener("gamepadconnected", (event) => {
+            console.log("Gamepad connected:", event.gamepad);
+        });
+
+        function checkGamepad() {
+            const gamepads = navigator.getGamepads();
+            if (gamepads[0]) {
+                const gp = gamepads[0];
+
+                // Example: Left Button (Axis or Button)
+                if (gp.axes[0] < -0.5 || gp.buttons[14].pressed) {
+                    window.parent.postMessage("LEFT", "*");
+                }
+
+                // Example: Right Button (Axis or Button)
+                if (gp.axes[0] > 0.5 || gp.buttons[15].pressed) {
+                    window.parent.postMessage("RIGHT", "*");
+                }
+            }
+            requestAnimationFrame(checkGamepad);
+        }
+
+        window.addEventListener("load", () => {
+            setTimeout(checkGamepad, 1000);
+        });
+    </script>
+</body>
+</html>
